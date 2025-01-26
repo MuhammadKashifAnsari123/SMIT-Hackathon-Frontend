@@ -1,52 +1,40 @@
-import { useContext, useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
-import "./App.css";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-// import Login from "./Login";
-import Admin from "./pages/admin/admin";
-// import User from "./pages/user/user";
-import Teacher from "./pages/teacher/teacher";
-import { AuthContext } from "./context/AuthContext";
-import Cookies from "js-cookie";
-import Students from "./pages/students/students";
-import Signup from "./pages/signup/signup";
-import Login from "./pages/login/login";
-import Header from "./components/Header";
-import Sidebar from "./components/Sidebar";
-import Dashboard from "./pages/dashboard/dashboard";
-import PrivateRoute from "./components/protectedRoutes";
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router';
+import LandingPage from './pages/LandingPage';
+import LoanCalculator from './components/Loancalculator';
+import Register from './pages/Register';
+import Login from './pages/Login';
+import LoanForm from './components/LoanForm';
+import AdminDashboard from './components/AdminDashboard';
+import Overview from './pages/admin/Overview';
+import Settings from './pages/admin/Settings';
+import ManageUsers from './pages/admin/ManageUsers';
+import ManageLoans from './pages/admin/ManageLoans';
+import LoanApplications from './pages/admin/LoanApplications';
 
-function App() {
-
-  const { user } = useContext(AuthContext);
-
-  const token = localStorage.getItem("authToken");
-  // console.log("user=>", user);
-  // console.log("token=>", Cookies.get("token"));
+const App = () => {
   return (
-    <Routes>
-      {/* <Route path="/" element={user ? <Navigate to={"/user"} /> : <Login />} /> */}
-      <Route path="/" element={<Signup/>} />
-      <Route path="/login" element={<Login/>} />
-      <Route path="/Header" element={<Header/>} />
-      <Route path="/Sidebar" element={<Sidebar/>} />
+    <Router>
+      <div className="min-h-screen bg-gray-50">
+        <Routes>
+          {/* Public Routes */}
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/calculator" element={<LoanCalculator />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/login" element={<Login />} />
 
-
-<Route
-          path="/dashboard"
-          element={
-            <PrivateRoute>
-              <Dashboard />
-            </PrivateRoute>
-          }
-        />
-
-      <Route path="/admin" element={<Admin />} />
-      <Route path="/user" element={user ? <Students /> : <Navigate to={"/"} />} />
-      <Route path="/teacher" element={<Teacher />} />
-    </Routes>
+          {/* Protected Routes */}
+          <Route path="/loan-form" element={<LoanForm />} />
+          <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/admin/overview" element={<Overview />} />
+            <Route path="/admin/manageusers" element={<ManageUsers />} />
+            <Route path="/admin/manageloans" element={<ManageLoans />} />
+            <Route path="/admin/settings" element={<Settings />} />
+            <Route path="/loans/:category" element={<LoanApplications />} />
+        </Routes>
+      </div>
+    </Router>
   );
-}
+};
 
 export default App;
